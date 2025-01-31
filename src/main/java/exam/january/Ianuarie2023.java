@@ -93,6 +93,41 @@ public class Ianuarie2023 {
 
         return key.getEncoded();
     }
+
+    public static void cerinta4(String inputFile, String outputFile, byte[] key) throws Exception {
+        // Citim fișierul original
+        FileInputStream fis = new FileInputStream(inputFile);
+        FileOutputStream fos = new FileOutputStream(outputFile);
+
+        // Inițializarea algoritmului AES cu mod CBC și padding PKCS5Padding
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+        // Creăm un IV (Initialization Vector) pentru criptare
+        byte[] IV = new byte[cipher.getBlockSize()];
+        IV[10] = (byte) 0xFF; // Exemple aleatorii pentru IV, se poate ajusta
+
+        // Specificăm cheia de criptare și IV
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+        IvParameterSpec ivSpec = new IvParameterSpec(IV);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+
+        // Criptăm fișierul
+        byte[] buffer = new byte[1024];
+        int noBytes;
+        while ((noBytes = fis.read(buffer)) != -1) {
+            byte[] encrypted = cipher.update(buffer, 0, noBytes);
+            fos.write(encrypted);
+        }
+        byte[] encrypted = cipher.doFinal();
+        fos.write(encrypted);
+
+        // Închidem stream-urile
+        fis.close();
+        fos.close();
+
+        System.out.println("Fișierul a fost criptat cu succes.");
+    }
+
     public static boolean verifyPassword(String decryptedPassword, String salt, int iterations, int outputSize, String filePath) throws Exception {
         // Generăm hash-ul pentru parola decriptată cu salt
         byte[] generatedHash = cerinta3(decryptedPassword, "PBKDF2WithHmacSHA1", salt, iterations, outputSize);
@@ -149,6 +184,13 @@ public class Ianuarie2023 {
         } else {
             System.out.println("Password verification failed.");
         }
+        System.out.println("The end.");
+
+        //cerinta4
+        String inputFile = "src/main/java/exam/january/somefile.txt";  // fișierul de intrare
+        String encryptedOutputFile = "src/main/java/exam/january/encrypted_file_4.bin";  // fișierul criptat de ieșire
+        cerinta4(inputFile, encryptedOutputFile, aesKey);  // apelarea metodei de criptare
+
         System.out.println("The end.");
     }
 }
