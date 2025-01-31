@@ -108,16 +108,16 @@ public class Ianuarie2023 {
     }
     public static void main(String[] args) throws Exception {
         String base64HashToFind = "pP+QN170gTIZzl/AfxFscko/OnJ3Gb9y1274ZTCpu/c=";
-        String directoryPath = "src/main/java/ExamPreparation/january/users2";
+        String directoryPath = "src/main/java/exam/january/users2";
         byte[] aesKey = "userfilepass@9]9".getBytes();
 
         File userFile = cerinta1(base64HashToFind, directoryPath);
 
-        cerinta2(userFile, "src/main/java/ExamPreparation/january/decrypted_password.txt", aesKey);
+        cerinta2(userFile, "src/main/java/exam/january/decrypted_password.txt", aesKey);
 
         // Citirea parolei decriptate
         String decryptedPassword;
-        try (FileInputStream fis = new FileInputStream("src/main/java/ExamPreparation/january/decrypted_password.txt")) {
+        try (FileInputStream fis = new FileInputStream("src/main/java/exam/january/decrypted_password.txt")) {
             byte[] bytes = fis.readAllBytes();
             decryptedPassword = new String(bytes).trim();
         }

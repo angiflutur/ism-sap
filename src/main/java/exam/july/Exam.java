@@ -15,10 +15,10 @@ import java.util.Map;
 public class Exam {
 
     static File Cerinta1() throws Exception {
-        var dir = new File("src/main/java/ExamPreparation/july/system32");
+        var dir = new File("src/main/java/exam/july/system32");
         var files = dir.listFiles();
         Map<String, String> fileDataList = new HashMap<>();
-        try(var br = new BufferedReader(new FileReader("src/main/java/ExamPreparation/july/sha2Fingerprints.txt")))
+        try(var br = new BufferedReader(new FileReader("src/main/java/exam/july/sha2Fingerprints.txt")))
         {
             String fileName;
             String refSha;
@@ -69,9 +69,9 @@ public class Exam {
             byte[] buffer = new byte[cipher.getBlockSize()];
             int readBytes;
             StringBuffer sb = new StringBuffer();
-            try(var fis2 = new FileInputStream("src/main/java/ExamPreparation/july/financialdata.enc"))
+            try(var fis2 = new FileInputStream("src/main/java/exam/july/financialdata.enc"))
             {
-                try(var bw = new BufferedWriter(new FileWriter("src/main/java/ExamPreparation/july/financialdata.txt"))) {
+                try(var bw = new BufferedWriter(new FileWriter("src/main/java/exam/july/financialdata.txt"))) {
                     while ((readBytes = fis2.read(buffer)) != -1) {
                         String intermediate = new String(cipher.update(buffer, 0, readBytes));
                         bw.write(intermediate);
@@ -87,17 +87,17 @@ public class Exam {
 
     static void Cerinta3() throws Exception {
         Cerinta2();
-        try(var br = new BufferedReader(new FileReader("src/main/java/ExamPreparation/july/financialdata.txt"))) {
+        try(var br = new BufferedReader(new FileReader("src/main/java/exam/july/financialdata.txt"))) {
             String IBAN = br.readLine();
-            try(var bw = new FileWriter("src/main/java/ExamPreparation/july/myresponse.txt"))
+            try(var bw = new FileWriter("src/main/java/exam/july/myresponse.txt"))
             {
                 bw.write(IBAN);
             }
         }
-        try(var fis = new FileInputStream("src/main/java/ExamPreparation/july/myresponse.txt"))
+        try(var fis = new FileInputStream("src/main/java/exam/july/myresponse.txt"))
         {
             KeyStore keyStore = KeyStore.getInstance("JKS");
-            try(var kss = new FileInputStream("src/main/java/ExamPreparation/july/mykeystore.jks"))
+            try(var kss = new FileInputStream("src/main/java/exam/july/mykeystore.jks"))
             {
                 keyStore.load(kss, "password".toCharArray());
             }
@@ -112,7 +112,7 @@ public class Exam {
 
             byte[] digitalSignature = signature.sign();
 
-            try(var fos = new FileOutputStream("src/main/java/ExamPreparation/july/DataSignature.ds"))
+            try(var fos = new FileOutputStream("src/main/java/exam/july/DataSignature.ds"))
             {
                 fos.write(digitalSignature);
             }
